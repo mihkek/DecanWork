@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="java">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/build/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/demo/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/generated/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/legacy/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/main/core-api/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/main/core-impl/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/main/protocol-impl/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/main/user-api/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/main/user-impl/java" />
+      <root url="file://$PROJECT_DIR$/../mysqlDriver/src/test/java" />
+    </SOURCES>
+  </library>
+</component>
