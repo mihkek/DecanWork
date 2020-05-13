@@ -1,8 +1,6 @@
 package com.company;
-import com.sun.jdi.JDIPermission;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -109,7 +107,49 @@ public class Main {
                 return  result;
             }
         }
-        public static  ArrayList<Object> readQuery(String tableName, String columns, String condition)  {
+        public  static ArrayList<ArrayList<Object>> readSomeFieldQuery(String tableName,ArrayList<String> columns, String condition)
+        {
+            if(!hasConnection)
+                return  null;
+            String query = "select ";
+            for (int i=0;i<columns.size();i++)
+            {
+                 query+=  columns.get(i);
+                 if(i!= columns.size()-1)
+                     query += ",";
+            }
+            query += " from "+tableName;
+            if(condition != null)
+            {
+                query += " where "+condition;
+            }
+            query += ";";
+            ArrayList<ArrayList<Object>> data = new ArrayList<>();
+            Statement stmt = null;
+            try {
+                stmt = connection.createStatement();
+
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next())
+                {
+                    ArrayList<Object> fieldData = new ArrayList<>();
+                    for(int i =1;i<=columns.size();i++)
+                    {
+                        fieldData.add(rs.getObject(i));
+                    }
+                    data.add(fieldData);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+            return  data;
+        }
+        public static ArrayList<ArrayList<Object>> readSomeFieldQuery(String tableName, ArrayList<String> columns)
+        {
+            return  readSomeFieldQuery(tableName, columns,null);
+        }
+        public static  ArrayList<Object> readOneFieldQuery(String tableName, String columns, String condition)  {
             if(!hasConnection)
                 return  null;
             String query = "select "+columns+" from "+tableName;
@@ -135,8 +175,8 @@ public class Main {
             }
             return  data;
         }
-        public static ArrayList<Object> readQuery(String tableName, String columns)  {
-             return readQuery(tableName, columns, null);
+        public static ArrayList<Object> readOneFieldQuery(String tableName, String columns)  {
+             return readOneFieldQuery(tableName, columns, null);
         }
         public  static  void writeQuery(String tableName, String values){
             if(!hasConnection)
@@ -146,7 +186,6 @@ public class Main {
             try {
                 PreparedStatement preparedStmt = connection.prepareStatement(query);
                 preparedStmt.execute();
-               // ResultSet rs = stmt.executeQuery(query);
             }catch (SQLException e) {
                 e.printStackTrace();
                 return;

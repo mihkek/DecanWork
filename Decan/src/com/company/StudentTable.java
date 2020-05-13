@@ -1,14 +1,14 @@
 package com.company;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class GroupModel extends BaseDbTable {
-    public  GroupModel()
+public class StudentTable extends BaseDbTable {
+    public  StudentTable()
     {
         columnCount = 3;
-        dbTableName = "groupa";
+        dbTableName = "student";
         records = new ArrayList<>();
         Main.DBWorking.tables.add(this);
         readData();
@@ -21,26 +21,26 @@ public class GroupModel extends BaseDbTable {
             case 1:
                 return "Название";
             case  2:
-                return  "Кафедра";
+                return  "Группа";
         }
         return "";
     }
     public Object getValueAt(int rowIndex, int columnIndex) {
-        GroupRow row = (GroupRow) records.get(rowIndex);
+        StudentRow row = (StudentRow) records.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return row.getId();
             case 1:
                 return row.getName();
             case  2:
-                return  row.getLookUp_IdDec();
+                return  row.getLookUp_IdGroup();
         }
         return "";
     }
 
     @Override
     public BaseDbRow constructTableRow() {
-        return  new GroupRow();
+        return  new StudentRow();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class GroupModel extends BaseDbTable {
         {
             case 0: return "id";
             case 1: return  "name";
-            case 2: return  "idKaf";
+            case 2: return  "idGroup";
         }
         return  "invalid role index";
     }
@@ -66,13 +66,12 @@ public class GroupModel extends BaseDbTable {
 
     @Override
     public HashMap<String, Integer> generateLookUpFields(int id) {
-        //format - tableName$$$keyField$$$ValueField
-        String params ="kafedra:::name:::id:::Кафедра";
+        String params ="groupa:::name:::id:::Группа";
         HashMap<String, Integer> data = new HashMap<>();
         if(id != -1)
-            data.put(params, Integer.parseInt(records.get(id).getRoleValue(2)));
+           data.put(params, Integer.parseInt(records.get(id).getRoleValue(2)));
         else
-            data.put(params, -1);
+            data.put(params,-1);
         return  data;
     }
 }

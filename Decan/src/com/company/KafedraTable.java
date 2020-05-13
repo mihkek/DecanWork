@@ -6,17 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class KafedraTable extends BaseDbTable {
-    // private List<BaseDbRow> beans;
-    public KafedraTable(List<BaseDbRow> beans) {
-        this.records = beans;
-        columnCount = 3;
-        dbTableName = "kafedra";
-    }
     public  KafedraTable()
     {
         columnCount = 3;
         dbTableName = "kafedra";
         records = new ArrayList<>();
+        Main.DBWorking.tables.add(this);
         readData();
     }
 
@@ -72,10 +67,12 @@ public class KafedraTable extends BaseDbTable {
 
     @Override
     public HashMap<String, Integer> generateLookUpFields(int id) {
-        //format - tableName$$$keyField$$$ValueField
         String params ="decanat:::name:::id:::Деканат";
         HashMap<String, Integer> data = new HashMap<>();
-        data.put(params, id);
+        if(id != -1)
+          data.put(params, Integer.parseInt(records.get(id).getRoleValue(2)));
+        else
+            data.put(params, -1);
         return  data;
     }
 }

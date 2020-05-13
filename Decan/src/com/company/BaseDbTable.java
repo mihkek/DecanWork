@@ -3,7 +3,6 @@ package com.company;
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import java.sql.SQLException;
 import java.util.*;
 
 
@@ -56,26 +55,43 @@ public abstract class BaseDbTable  implements TableModel
         records.clear();
         ArrayList<ArrayList<Object>> data = new ArrayList<>();
         BaseDbRow row;
-        for(int i =0;i<columnCount;i++)
+        ArrayList<String> cols = new ArrayList<>();
+        for(int i = 0;i<columnCount;i++)
         {
-            ArrayList<Object> columnValues = Main.DBWorking.readQuery(dbTableName, getDbRoleName(i), conditions);
-            data.add(columnValues);
+            cols.add(getDbRoleName(i));
         }
-        for(int j =0;j<data.get(0).size();j++)
+        data = Main.DBWorking.readSomeFieldQuery(dbTableName, cols);
+        for(int j =0;j<data.size();j++)
         {
             row = constructTableRow();
-            for(int i =0; i < columnCount;i++)
-             {
-                 Object value = data.get(i).get(j);
-                 int ff = 0;
-                 row.setRoleValue(i, data.get(i).get(j));
-            }
+            row.buildFromList(data.get(j), true);
+//            for(int i =0; i < columnCount;i++)
+//             {
+//                 Object value = data.get(i).get(j);
+//                 row.setRoleValue(i, data.get(i).get(j));
+//            }
             records.add(row);
         }
+        sort();
     }
     public  void readData(){
 
         readData(null);
+    }
+    public void sort()
+    {
+        int f = 0;
+        for (int i = 0; i < records.size(); i++) {
+            for (int j = 0; j < records.size() -1; j++) {
+                String val1 = records.get(j).getRoleValue(0);
+                String val2 =  records.get(j + 1).getRoleValue(0);
+                if (Integer.parseInt(records.get(j).getRoleValue(0)) < Integer.parseInt(records.get(j + 1).getRoleValue(0))) {
+                    BaseDbRow b = records.get(j); // создали дополнительную переменную
+                    records.set(j, records.get(j+1));// digitals[j + 1]; // меняем местами
+                    records.set(j + 1, b);// = b; // значения элементов
+                }
+            }
+        }
     }
 
     public   void updateRow(int id, BaseDbRow row)

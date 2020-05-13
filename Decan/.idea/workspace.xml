@@ -28,12 +28,12 @@
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.company" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="W:\Всё сдал\java+mysql\Decan\out\production\Decan\com\company" />
       <recent name="W:\Всё сдал\java+mysql\Decan\out\production\Decan\com\dbRows" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.company" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -92,18 +92,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="525" y="215" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1588606869659" />
-    <state x="574" y="122" key="#com.intellij.ide.util.MemberChooser" timestamp="1589203958154">
+    <state x="574" y="122" key="#com.intellij.ide.util.MemberChooser" timestamp="1589385862762">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="574" y="122" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1589203958154" />
-    <state x="489" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1588772354402">
+    <state x="574" y="122" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1589385862762" />
+    <state x="566" y="297" width="403" height="236" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1589390128802">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="489" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1588772354402" />
-    <state width="422" height="466" key="DebuggerActiveHint" timestamp="1589186256997">
+    <state x="566" y="297" width="403" height="236" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1589390128802" />
+    <state x="489" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589383975277">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="422" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1589186256997" />
+    <state x="489" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1589383975277" />
+    <state width="442" height="466" key="DebuggerActiveHint" timestamp="1589376193244">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="442" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1589376193244" />
     <state x="551" y="128" key="DetectedRootsChooserDialog" timestamp="1588761125599">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -112,46 +116,46 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="501" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1589136251364" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1589285863633">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1589391724055">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589285863633" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1589285863633">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589391724055" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1589391724055">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589285863633" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1589285863633">
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589391724055" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1589391724055">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589285863633" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1589285863633">
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589391724055" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1589391724055">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589285863633" />
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1589285524866">
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589391724055" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1589391214231">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589285524866" />
-    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1589285524866">
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589391214231" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1589391214231">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1589285524866" />
-    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1589285524866">
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1589391214231" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1589391214231">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1589285524866" />
-    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1589285524866">
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1589391214231" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1589391214231">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1589285524866" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1589391214231" />
     <state x="277" y="0" key="SettingsEditor" timestamp="1588769340702">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1588769340702" />
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1589285552433">
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1589383941572">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1589285552433" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1589383941572" />
     <state x="209" y="33" key="new project wizard" timestamp="1589136255991">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -166,8 +170,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/company/Main.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="6" />
+          <line>197</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/company/Main.java</url>
+          <line>184</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/company/InputForm.java</url>
+          <line>100</line>
+          <option name="timeStamp" value="42" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

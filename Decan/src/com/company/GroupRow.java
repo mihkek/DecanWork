@@ -3,15 +3,22 @@ package com.company;
 import java.util.ArrayList;
 
 public class GroupRow extends BaseDbRow {
-
     private int id;
-    private String fio;
+    private String name;
+    private  int idKaf;
 
-    public GroupRow(int id, String fio) {
+    public GroupRow(int id, String name, int idDec) {
         this.setId(id);
-        this.setFio(fio);
+        this.setName(name);
+        roleCount = 3;
     }
-    public  GroupRow(){ }
+    public  GroupRow(){
+        roleCount = 3;
+    }
+    public  GroupRow(String name){
+        this.name =name;
+        roleCount = 3;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -21,26 +28,33 @@ public class GroupRow extends BaseDbRow {
         return id;
     }
 
-    public void setFio(String size) {
-        this.fio = size;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFio() {
-        return fio;
+    public String getName() {
+        return name;
+    }
+
+    public  void setIdKaf(int value) {this.idKaf = value;}
+    public  int getIdKaf(){return idKaf;}
+    public  String getLookUp_IdDec(){
+        ArrayList<Object> data = Main.DBWorking.readOneFieldQuery("kafedra", "name", " id = '"+ idKaf +"'");
+        return  (String)data.get(0);
     }
     @Override
     public String buildForInsert() {
-        return null;
+        return "null, '"+name+"'"+ "," + "'"+ idKaf +"'";
     }
 
     @Override
     public String buildForUpdate() {
-        return null;
+        return "name = '"+name +"'"+ "," + " idKaf = '"+ idKaf +"'";
     }
 
     @Override
     public String getPrimaryKeyValue() {
-        return null;
+        return String.valueOf(id);
     }
 
     @Override
@@ -48,7 +62,8 @@ public class GroupRow extends BaseDbRow {
         switch (id)
         {
             case 0: return String.valueOf(this.id);
-            case 1: return  fio;
+            case 1: return  name;
+            case 2: return  String.valueOf(idKaf);
         }
         return  "invalid role index";
     }
@@ -57,15 +72,33 @@ public class GroupRow extends BaseDbRow {
     public void setRoleValue(int id, Object value) {
         switch (id)
         {
-            case 0: this.id = (int) value;
-            case 1: fio = (String) value;
+            case 0: this.id = (int) value; break;
+            case 1: name = (String) value; break;
+            case 2: idKaf = (int) value;break;
         }
     }
 
     @Override
-    public void buildFromList(ArrayList<Object> data) {
+    public void setPrimaryKeyValue(int value) {
+        id = value;
+    }
+
+    @Override
+    public void buildFromList(ArrayList<Object> data, boolean isFull) {
+        if(isFull) {
+            setPrimaryKeyValue((int)data.get(0));
+            name = (String)data.get(1);
+            idKaf = (int)data.get(2);
+            return;
+        }
         if(data.size() != roleCount-1)
             return;
-        fio = (String)data.get(0);
+        name = (String)data.get(0);
+        idKaf = (int)data.get(1);
+    }
+
+    @Override
+    public void buildFromList(ArrayList<Object> data) {
+         buildFromList(data, false);
     }
 }

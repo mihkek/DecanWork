@@ -40,7 +40,7 @@ public class KafedraRow  extends BaseDbRow {
     public  void setIdDec(int value) {this.idDec = value;}
     public  int getIdDec(){return  idDec;}
     public  String getLookUp_IdDec(){
-          ArrayList<Object> data = Main.DBWorking.readQuery("decanat", "name", " id = '"+idDec+"'");
+          ArrayList<Object> data = Main.DBWorking.readOneFieldQuery("decanat", "name", " id = '"+idDec+"'");
           return  (String)data.get(0);
     }
     @Override
@@ -62,7 +62,7 @@ public class KafedraRow  extends BaseDbRow {
     public String getRoleValue(int id) {
         switch (id)
         {
-            case 0: return String.valueOf(id);
+            case 0: return String.valueOf(this.id);
             case 1: return  name;
             case 2: return  String.valueOf(idDec);
         }
@@ -80,10 +80,26 @@ public class KafedraRow  extends BaseDbRow {
     }
 
     @Override
-    public void buildFromList(ArrayList<Object> data) {
+    public void setPrimaryKeyValue(int value) {
+       id = value;
+    }
+
+    @Override
+    public void buildFromList(ArrayList<Object> data, boolean isFull) {
+        if(isFull) {
+            setPrimaryKeyValue((int)data.get(0));
+            name = (String)data.get(1);
+            idDec = (int)data.get(2);
+            return;
+        }
         if(data.size() != roleCount-1)
             return;
         name = (String)data.get(0);
         idDec = (int)data.get(1);
+    }
+
+    @Override
+    public void buildFromList(ArrayList<Object> data) {
+       buildFromList(data, false);
     }
 }

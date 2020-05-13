@@ -1,9 +1,13 @@
 package com.company;
 
 import javax.swing.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-import static com.company.Main.DBWorking.readQuery;
+import static com.company.Main.DBWorking.hasConnection;
+import static com.company.Main.DBWorking.readOneFieldQuery;
 
 public class LookUpComboBox extends JComboBox {
     public ArrayList<Object> visibleValues;
@@ -14,14 +18,37 @@ public class LookUpComboBox extends JComboBox {
     public  LookUpComboBox(String tableName, String key, String value)
     {
         super();
-        this.keyField = keyField;
-        this.valueField = valueField;
+        this.keyField = key;
+        this.valueField = value;
         this.tableName = tableName;
-        visibleValues = readQuery(tableName, key);
-        keyValues = readQuery(tableName, value);
+        keyValues = new ArrayList<>();
+        visibleValues = new ArrayList<>();
+        lookUpQuery();
         for(int i = 0;i< visibleValues.size();i++)
         {
             addItem(visibleValues.get(i));
+        }
+    }
+    private void lookUpQuery()
+    {
+        if(!hasConnection)
+            return ;
+        String query = "select "+keyField+", " +valueField+ " from "+tableName+";";
+        Statement stmt = null;
+        try {
+            stmt = Main.DBWorking.connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next())
+            {
+                Object key = rs.getObject(2);
+                Object value = rs.getObject(1);
+                keyValues.add(key);
+                visibleValues.add(value);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
         }
     }
    public  void setSelectedIndex(Object keyFieldValue)

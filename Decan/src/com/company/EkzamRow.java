@@ -1,24 +1,17 @@
 package com.company;
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Date;
 
-public class SemestrRow  extends BaseDbRow {
+import java.util.ArrayList;
+
+public class EkzamRow extends BaseDbRow {
+
 
     private int id;
     private String name;
+    private int year;
+    private  int idSem;
 
-    public SemestrRow(int id, String name) {
-        this.setId(id);
-        this.setName(name);
-        roleCount = 3;
-    }
-    public  SemestrRow(){
-        roleCount = 2;
-    }
-    public  SemestrRow(String name){
-        this.name =name;
-        roleCount = 2;
+    public  EkzamRow(){
+        roleCount = 4;
     }
 
     public void setId(int id) {
@@ -37,14 +30,23 @@ public class SemestrRow  extends BaseDbRow {
         return name;
     }
 
+    public  int getYear() {return year;}
+    public  void setYear(int value){year = value;}
+
+    public  void setIdSem(int value) {this.idSem = value;}
+    public  int getidSem(){return  idSem;}
+    public  String getLookUp_IdSem(){
+        ArrayList<Object> data = Main.DBWorking.readOneFieldQuery("semestr", "name", " id = '"+idSem+"'");
+        return  (String)data.get(0);
+    }
     @Override
     public String buildForInsert() {
-        return "null, '"+name+"'";
+        return "null, '"+name+"'" + ","+"'"+year+"'"+ ","+ "'"+idSem+"'";
     }
 
     @Override
     public String buildForUpdate() {
-        return "name = '"+name +"'";
+        return "name = '"+name +"'"+ "," +"year = '" + year+"'"+","+ " idSem = '"+idSem+"'";
     }
 
     @Override
@@ -56,8 +58,10 @@ public class SemestrRow  extends BaseDbRow {
     public String getRoleValue(int id) {
         switch (id)
         {
-            case 0: return String.valueOf(id);
+            case 0: return String.valueOf(this.id);
             case 1: return  name;
+            case 2:return  String.valueOf(year);
+            case 3: return  String.valueOf(idSem);
         }
         return  "invalid role index";
     }
@@ -68,6 +72,8 @@ public class SemestrRow  extends BaseDbRow {
         {
             case 0: this.id = (int) value; break;
             case 1: name = (String) value; break;
+            case 2: year = (int) value;break;
+            case 3: idSem = (int) value;break;
         }
     }
 
@@ -81,15 +87,19 @@ public class SemestrRow  extends BaseDbRow {
         if(isFull) {
             setPrimaryKeyValue((int)data.get(0));
             name = (String)data.get(1);
+            year = (int)data.get(2);
+            idSem = (int)data.get(3);
             return;
         }
         if(data.size() != roleCount-1)
             return;
-        name = (String)data.get(0);
+        name = (String)data.get(1);
+        year = Integer.parseInt((String)data.get(0));
+        idSem = (int)data.get(2);
     }
 
     @Override
     public void buildFromList(ArrayList<Object> data) {
-       buildFromList(data, false);
+        buildFromList(data, false);
     }
 }

@@ -7,20 +7,13 @@ public class DecanRow extends BaseDbRow {
 
     private int id;
     private String name;
-
-    public DecanRow(int name, String size) {
-        this.setId(name);
-        this.setName(size);
-        roleCount = 2;
-    }
     public  DecanRow(){
         roleCount = 2;
     }
-    public  DecanRow(String name){
-        this.name =name;
-        roleCount = 2;
+    public  DecanRow(ArrayList<Object> data)
+    {
+        super(data);
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -56,7 +49,7 @@ public class DecanRow extends BaseDbRow {
     public String getRoleValue(int id) {
         switch (id)
         {
-            case 0: return String.valueOf(id);
+            case 0: return String.valueOf(this.id);
             case 1: return  name;
         }
         return  "invalid role index";
@@ -72,10 +65,26 @@ public class DecanRow extends BaseDbRow {
     }
 
     @Override
-    public void buildFromList(ArrayList<Object> data) {
+    public void setPrimaryKeyValue(int value) {
+        id = value;
+    }
+
+    @Override
+    public void buildFromList(ArrayList<Object> data, boolean isFull) {
+        if(isFull) {
+            setPrimaryKeyValue((int)data.get(0));
+            name = (String)data.get(1);
+            return;
+        }
         if(data.size() != roleCount-1)
             return;
         name = (String)data.get(0);
+
+    }
+
+    @Override
+    public void buildFromList(ArrayList<Object> data) {
+        buildFromList(data, false);
     }
 
 

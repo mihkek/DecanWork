@@ -9,15 +9,12 @@ import java.util.BitSet;
 import java.util.HashMap;
 
 public class InputForm extends JDialog {
+    public  static  final  int AddEdit = 1;
+    public  static final  int Search =2 ;
     public  BaseDbRow result;
     public  boolean hasResult = false;
     private ArrayList<JTextField> textFields;
     private  ArrayList<LookUpComboBox> lookUpFields;
-    enum formMode
-    {
-        SEARCH,EDIT
-    }
-    //call - JDialog frm = new InputForm(this); frm.setVisible(true);
     public  InputForm(JFrame owner,  HashMap<String, JTextField> inputFields, BaseDbRow row, HashMap<String, Integer> lookUpFk)
     {
         super(owner, "Редактирование данных", true);
@@ -79,10 +76,10 @@ public class InputForm extends JDialog {
     }
     public  int generateHeight(int count)
     {
-        int res = 0;
+        int res = 50;
         for(int i =0;i<count;i++)
         {
-            res += 80;
+            res += 35;
         }
         return  res;
     }

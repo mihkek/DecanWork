@@ -8,21 +8,12 @@ import java.util.List;
 import static javax.swing.UIManager.get;
 
 public  class DecanModel extends BaseDbTable {
-       // private List<BaseDbRow> beans;
-        public DecanModel(List<BaseDbRow> beans) {
-            this.records = beans;
-            columnCount = 2;
-            dbTableName = "decanat";
-        }
         public  DecanModel()
         {
-            ArrayList<BaseDbRow> beans = new ArrayList<BaseDbRow>();
-        for (int i = 0; i < 1; i++) {
-            beans.add(new DecanRow( i, "Название " + i));
-        }
-            records = beans;
+            records = new ArrayList<>();
             columnCount = 2;
             dbTableName = "decanat";
+            Main.DBWorking.tables.add(this);
             readData();
         }
 

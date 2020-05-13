@@ -55,7 +55,11 @@ public class ModFrame extends JFrame {
     framePage pageGroup;
     framePage pageSemestr;
     framePage pageKafedra;
+    framePage pageEkzam;
+    framePage pageStudent;
+    framePage pageEkzst;
     framePage currentPage;
+
 
     public ModFrame() {
         super("Деканат");
@@ -74,14 +78,11 @@ public class ModFrame extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        ArrayList<BaseDbRow> beans = new ArrayList<BaseDbRow>();
+        pageEkzst = new framePage(new EkzstTable());
+        pageStudent = new framePage(new StudentTable());
+        pageEkzam = new framePage(new EkzamTable());
         pageDecan = new framePage( new DecanModel());
-        beans = new ArrayList<BaseDbRow>();
-        for (int i = 0; i < 30; i++) {
-            beans.add(new GroupRow(i, "Название " + i));
-        }
-
-        pageGroup = new framePage(new GroupModel(beans));
+        pageGroup = new framePage(new GroupModel());
         pageSemestr = new framePage(new SemestrTable());
         pageKafedra = new framePage(new KafedraTable());
         pageDecan.addComponentsToFrame(this);
@@ -92,7 +93,6 @@ public class ModFrame extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         currentPage = pageDecan;
-        //currentModel = tblDecan;//.getModel();
     }
     public  void createActionsPanel()
     {
@@ -137,15 +137,15 @@ public class ModFrame extends JFrame {
         menu.setFont(font);
         return  menu;
     }
-
-
-    //Actions
     private  void setCurrentPage(framePage active)
     {
         pageGroup.removeComponentsFromFrame(this);
         pageSemestr.removeComponentsFromFrame(this);
         pageDecan.removeComponentsFromFrame(this);
         pageKafedra.removeComponentsFromFrame(this);
+        pageEkzam.removeComponentsFromFrame(this);
+        pageStudent.removeComponentsFromFrame(this);
+        pageEkzst.removeComponentsFromFrame(this);
         active.addComponentsToFrame(this);
         currentPage = active;
     }
@@ -160,10 +160,7 @@ public class ModFrame extends JFrame {
     {
         setCurrentPage(pageDecan);
     }
-    public  void actionGroup()
-    {
-       //setCurrentPage(pageGroup);
-    }
+    public  void actionGroup() { setCurrentPage(pageGroup); }
     public  void actionSemestr()
     {
       setCurrentPage(pageSemestr);
@@ -172,6 +169,9 @@ public class ModFrame extends JFrame {
     {
         setCurrentPage(pageKafedra);
     }
+    public  void actionEkzam(){setCurrentPage(pageEkzam);}
+    public  void  actionStudent(){setCurrentPage(pageStudent);}
+    public  void  actionEkzst(){setCurrentPage(pageEkzst);}
     public  void actionAdd()
     {
         InputForm frm = new InputForm(this, currentPage.getModel().generateInputFields(-1),
@@ -188,7 +188,7 @@ public class ModFrame extends JFrame {
         int id = currentPage.getSelectedRow();
         InputForm frm = new InputForm(this,
                 currentPage.getModel().generateInputFields(id), model.records.get(id),
-                currentPage.getModel().generateLookUpFields(Integer.parseInt(model.records.get(currentPage.getSelectedRow()).getRoleValue(0))));
+                currentPage.getModel().generateLookUpFields(id));//Integer.parseInt(model.records.get(currentPage.getSelectedRow()).getRoleValue(0))));
         frm.setVisible(true);
         if(frm.hasResult) {
            currentPage.getModel().updateRow(id, frm.result);
@@ -231,12 +231,26 @@ public class ModFrame extends JFrame {
                 actionGroup();
             }
         });;
+        addMenuItem("Студенты", fileMenu, font).addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionStudent();
+            }
+        });;
         addMenuItem("Семестр", fileMenu, font).addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 actionSemestr();
             }
         });
-        addMenuItem("Успеваемость", fileMenu, font);
+        addMenuItem("Экзамены", fileMenu, font).addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionEkzam();
+            }
+        });
+        addMenuItem("Успеваемость", fileMenu, font).addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionEkzst();
+            }
+        });
         menuBar.add(fileMenu);
         JMenu dbMenu = addMenu("База данных", font);
         addMenuItem("Обновить соединения", dbMenu, font);

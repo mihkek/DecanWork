@@ -6,21 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SemestrTable extends  BaseDbTable {
-    // private List<BaseDbRow> beans;
-    public SemestrTable(List<BaseDbRow> beans) {
-        this.records = beans;
-        columnCount = 2;
-        dbTableName = "decanat";
-    }
     public  SemestrTable()
     {
-        ArrayList<BaseDbRow> beans = new ArrayList<BaseDbRow>();
-        for (int i = 0; i < 1; i++) {
-            beans.add(new SemestrRow( i, "Название " + i));
-        }
-        records = beans;
+        records = new ArrayList<>();
         columnCount = 2;
         dbTableName = "semestr";
+        Main.DBWorking.tables.add(this);
         readData();
     }
 
@@ -63,7 +54,6 @@ public class SemestrTable extends  BaseDbTable {
         HashMap<String, JTextField> fields = new HashMap<>();
 
         JTextField field = new JTextField();
-        JTextField date = new JTextField();
         if(id != -1){
             field.setText(records.get(id).getRoleValue(1));
         }
