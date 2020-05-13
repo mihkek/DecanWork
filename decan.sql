@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 11 2020 г., 16:49
+-- Время создания: Май 13 2020 г., 19:57
 -- Версия сервера: 10.4.11-MariaDB
 -- Версия PHP: 7.2.28
 
@@ -38,9 +38,10 @@ CREATE TABLE `decanat` (
 --
 
 INSERT INTO `decanat` (`id`, `name`) VALUES
-(1, 'ФВТ'),
-(2, 'ФМТ'),
-(8, 'Кафедра химии');
+(1, 'ФПИТЕ'),
+(2, 'ФВТ'),
+(8, 'Мед'),
+(9, 'ФМТ');
 
 -- --------------------------------------------------------
 
@@ -51,8 +52,20 @@ INSERT INTO `decanat` (`id`, `name`) VALUES
 CREATE TABLE `ekzam` (
   `id` int(11) NOT NULL,
   `name` varchar(200) NOT NULL,
+  `year` int(20) DEFAULT NULL,
   `idSem` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `ekzam`
+--
+
+INSERT INTO `ekzam` (`id`, `name`, `year`, `idSem`) VALUES
+(1, 'Математика', 2019, 2),
+(2, 'Информатика', 2020, 3),
+(3, 'Русский', 2029, 2),
+(4, 'Химия', 2020, 2),
+(5, 'Физика', 2020, 3);
 
 -- --------------------------------------------------------
 
@@ -63,8 +76,18 @@ CREATE TABLE `ekzam` (
 CREATE TABLE `ekzst` (
   `id` int(11) NOT NULL,
   `idSt` int(11) NOT NULL,
-  `idEkz` int(11) NOT NULL
+  `idEkz` int(11) NOT NULL,
+  `score` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `ekzst`
+--
+
+INSERT INTO `ekzst` (`id`, `idSt`, `idEkz`, `score`) VALUES
+(4, 1, 1, 'Хорошо'),
+(5, 2, 2, 'Отлично'),
+(7, 2, 3, 'Удовлетворительно');
 
 -- --------------------------------------------------------
 
@@ -77,6 +100,16 @@ CREATE TABLE `groupa` (
   `name` varchar(100) NOT NULL,
   `idKaf` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `groupa`
+--
+
+INSERT INTO `groupa` (`id`, `name`, `idKaf`) VALUES
+(1, '16во1', 6),
+(2, '20во12', 3),
+(4, '14вв2', 1),
+(5, '17дд3', 7);
 
 -- --------------------------------------------------------
 
@@ -95,8 +128,10 @@ CREATE TABLE `kafedra` (
 --
 
 INSERT INTO `kafedra` (`id`, `name`, `idDec`) VALUES
-(1, 'Кафедра физики', 2),
-(3, 'Кафедра ', 8);
+(1, 'Кафедра физики', 1),
+(3, 'Кафедра химии', 8),
+(6, 'ИВС', 2),
+(7, 'ТТС', 9);
 
 -- --------------------------------------------------------
 
@@ -126,9 +161,19 @@ INSERT INTO `semestr` (`id`, `name`) VALUES
 
 CREATE TABLE `student` (
   `id` int(11) NOT NULL,
-  `fio` varchar(150) NOT NULL,
+  `name` varchar(150) NOT NULL,
   `idGroup` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `student`
+--
+
+INSERT INTO `student` (`id`, `name`, `idGroup`) VALUES
+(1, 'Иванов И И', 2),
+(2, 'Петров П П', 4),
+(3, 'Сидоров В В', 1),
+(4, 'Ворошилов М А', 5);
 
 --
 -- Индексы сохранённых таблиц
@@ -190,31 +235,31 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT для таблицы `decanat`
 --
 ALTER TABLE `decanat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `ekzam`
 --
 ALTER TABLE `ekzam`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `ekzst`
 --
 ALTER TABLE `ekzst`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `groupa`
 --
 ALTER TABLE `groupa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `kafedra`
 --
 ALTER TABLE `kafedra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `semestr`
@@ -226,7 +271,7 @@ ALTER TABLE `semestr`
 -- AUTO_INCREMENT для таблицы `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
