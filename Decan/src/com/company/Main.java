@@ -80,10 +80,9 @@ public class Main {
 
         }
 
-        public  class queryBuilder
+        public static class queryConditionsBuilder
         {
             private Map<String, String> conditions = new HashMap<String,String>();
-            private List<String> values = new ArrayList<>();
             public  void addCondition( String key,String value)
             {
                 conditions.put(key, value);
@@ -91,10 +90,6 @@ public class Main {
             public  void removeCondition(String key)
             {
                 conditions.remove(key);
-            }
-            public void addValue(String value)
-            {
-                values.add(value);
             }
             public  String buildData()
             {

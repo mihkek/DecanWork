@@ -12,27 +12,44 @@ public class InputForm extends JDialog {
     public  static  final  int AddEdit = 1;
     public  static final  int Search =2 ;
     public  BaseDbRow result;
+    public  ArrayList<Boolean> checkedConditions;
     public  boolean hasResult = false;
     private ArrayList<JTextField> textFields;
     private  ArrayList<LookUpComboBox> lookUpFields;
-    public  InputForm(JFrame owner,  HashMap<String, JTextField> inputFields, BaseDbRow row, HashMap<String, Integer> lookUpFk)
+    private ArrayList<JCheckBox> checkBoxes;
+    public  InputForm(JFrame owner,  HashMap<String, JTextField> inputFields, BaseDbRow row, HashMap<String, Integer> lookUpFk, int formMode)
     {
-        super(owner, "Редактирование данных", true);
+       super(owner, "", true);
+       if(formMode == AddEdit)
+          setTitle("Редактирование");
+       else
+           setTitle("Поиск");
         int rowCount = inputFields.size();
         if(lookUpFk != null)
             rowCount += lookUpFk.size();
         textFields = new ArrayList<>();
         setSize(600, generateHeight(rowCount));
         JPanel panelFiels = new JPanel();
-        panelFiels.setLayout(new GridLayout(rowCount, 2, 1, 1));
+
+        int colsCount = 2;
+        if(formMode == Search)
+            colsCount += 1;
+        panelFiels.setLayout(new GridLayout(rowCount, colsCount, 1, 1));
 
         Object[] keys =  inputFields.keySet().toArray();
         Object[] values = inputFields.values().toArray();
+        checkBoxes = new ArrayList<>();
         for(int i =0;i<inputFields.size();i++)
         {
             panelFiels.add(new JLabel((String)keys[i]));
             panelFiels.add((JTextField)values[i]);
             textFields.add((JTextField)values[i]);
+
+            if(formMode == Search) {
+                JCheckBox chb = new JCheckBox("Учитывать");
+                checkBoxes.add(chb);
+                panelFiels.add(chb);
+            }
         }
         if(lookUpFk != null)
         {
@@ -51,6 +68,11 @@ public class InputForm extends JDialog {
                  lookUpFields.add(lookUp);
                  panelFiels.add(new JLabel(data[3]));
                  panelFiels.add(lookUp);
+                 if(formMode == Search) {
+                     JCheckBox chb = new JCheckBox("Учитывать");
+                     checkBoxes.add(chb);
+                     panelFiels.add(chb);
+                 }
              }
         }
         add(panelFiels);
@@ -59,7 +81,7 @@ public class InputForm extends JDialog {
         JButton  butAdd = new JButton("Сохранить");
         butAdd.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            saveClick();
+            saveClick(formMode);
         }
     });
         panelButtons.add(butAdd);
@@ -84,20 +106,27 @@ public class InputForm extends JDialog {
         return  res;
     }
 
-    public  void  saveClick()
+    public  void  saveClick(int mode)
     {
-        ArrayList<Object> data= new ArrayList<>();
-        for(int i =0;i<textFields.size();i++)
-        {
-            data.add(textFields.get(i).getText());
+        ArrayList<Object> data = new ArrayList<>();
+            for (int i = 0; i < textFields.size(); i++) {
+                data.add(textFields.get(i).getText());
 
-        }
-        if(lookUpFields != null){
-            for(int i=0;i<lookUpFields.size();i++)
-            {
-                data.add(lookUpFields.get(i).getKeyValue());
             }
-        }
+            if (lookUpFields != null) {
+                for (int i = 0; i < lookUpFields.size(); i++) {
+                    data.add(lookUpFields.get(i).getKeyValue());
+                }
+            }
+       if(mode == Search)
+       {
+           checkedConditions = new ArrayList<>();
+           for(int i =0;i<checkBoxes.size();i++)
+           {
+               checkedConditions.add(checkBoxes.get(i).isSelected());
+           }
+       }
+
         result.buildFromList(data);
         hasResult = true;
         setVisible(false);

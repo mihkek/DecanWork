@@ -18,6 +18,16 @@ public abstract class BaseDbTable  implements TableModel
     ///
     public  abstract HashMap<String, JTextField> generateInputFields(int id);
     public  abstract  HashMap<String, Integer> generateLookUpFields(int id);
+    public  void search(BaseDbRow example, ArrayList<Boolean> chechedFields){
+        Main.DBWorking.queryConditionsBuilder conditions = new Main.DBWorking.queryConditionsBuilder();
+        for(int i =1;i<columnCount;i++)
+        {
+            if(chechedFields.get(i-1))
+                conditions.addCondition(getDbRoleName(i), example.getRoleValue(i));
+        }
+        String res = conditions.buildData();
+        readData(res);
+    }
 
     private Set<TableModelListener> listeners = new HashSet<TableModelListener>();
     public Class<?> getColumnClass(int columnIndex) {
@@ -60,20 +70,20 @@ public abstract class BaseDbTable  implements TableModel
         {
             cols.add(getDbRoleName(i));
         }
-        data = Main.DBWorking.readSomeFieldQuery(dbTableName, cols);
+        data = Main.DBWorking.readSomeFieldQuery(dbTableName, cols, conditions);
         for(int j =0;j<data.size();j++)
         {
             row = constructTableRow();
             row.buildFromList(data.get(j), true);
-//            for(int i =0; i < columnCount;i++)
-//             {
-//                 Object value = data.get(i).get(j);
-//                 row.setRoleValue(i, data.get(i).get(j));
-//            }
             records.add(row);
         }
         sort();
     }
+    public  void clearData()
+    {
+        records.clear();
+    }
+
     public  void readData(){
 
         readData(null);

@@ -58,6 +58,7 @@ public class ModFrame extends JFrame {
     framePage pageEkzam;
     framePage pageStudent;
     framePage pageEkzst;
+    framePage pageSearch;
     framePage currentPage;
 
 
@@ -85,6 +86,7 @@ public class ModFrame extends JFrame {
         pageGroup = new framePage(new GroupModel());
         pageSemestr = new framePage(new SemestrTable());
         pageKafedra = new framePage(new KafedraTable());
+        pageSearch = new framePage((new StudentTable()));
         pageDecan.addComponentsToFrame(this);
         createActionsPanel();
         createMenu();
@@ -146,6 +148,7 @@ public class ModFrame extends JFrame {
         pageEkzam.removeComponentsFromFrame(this);
         pageStudent.removeComponentsFromFrame(this);
         pageEkzst.removeComponentsFromFrame(this);
+        pageSearch.removeComponentsFromFrame(this);
         active.addComponentsToFrame(this);
         currentPage = active;
     }
@@ -175,7 +178,7 @@ public class ModFrame extends JFrame {
     public  void actionAdd()
     {
         InputForm frm = new InputForm(this, currentPage.getModel().generateInputFields(-1),
-                currentPage.getModel().constructTableRow(), currentPage.getModel().generateLookUpFields(-1));
+                currentPage.getModel().constructTableRow(), currentPage.getModel().generateLookUpFields(-1), InputForm.AddEdit);
         frm.setVisible(true);
         if(frm.hasResult) {
             currentPage.getModel().writeData(frm.result);
@@ -188,7 +191,7 @@ public class ModFrame extends JFrame {
         int id = currentPage.getSelectedRow();
         InputForm frm = new InputForm(this,
                 currentPage.getModel().generateInputFields(id), model.records.get(id),
-                currentPage.getModel().generateLookUpFields(id));//Integer.parseInt(model.records.get(currentPage.getSelectedRow()).getRoleValue(0))));
+                currentPage.getModel().generateLookUpFields(id), InputForm.AddEdit);//Integer.parseInt(model.records.get(currentPage.getSelectedRow()).getRoleValue(0))));
         frm.setVisible(true);
         if(frm.hasResult) {
            currentPage.getModel().updateRow(id, frm.result);
@@ -205,6 +208,42 @@ public class ModFrame extends JFrame {
             currentPage.updateUi();
         }
     }
+    public void actionSearchStudent()
+    {
+        pageSearch = new framePage(new StudentTable());
+        runSearch();
+    }
+    public  void actionSearchGroup()
+    {
+        pageSearch = new framePage(new GroupModel());
+        runSearch();
+    }
+    private  void runSearch()
+    {
+        setCurrentPage(pageSearch);
+        pageSearch.getModel().clearData();
+        pageSearch.updateUi();
+
+        InputForm frm = new InputForm(this, pageSearch.getModel().generateInputFields(-1),
+                pageSearch.getModel().constructTableRow(), pageSearch.getModel().generateLookUpFields(-1), InputForm.Search);
+        frm.setVisible(true);
+        if(frm.hasResult) {
+            boolean notVoid = false;
+            for(int i =0;i<frm.checkedConditions.size();i++)
+            {
+                if(frm.checkedConditions.get(i))
+                    notVoid = true;
+            }
+            if(!notVoid)
+            {
+                JOptionPane.showMessageDialog(this, "Не выбрано ни одно ключевое поле", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            pageSearch.getModel().search(frm.result, frm.checkedConditions);
+            pageSearch.updateUi();
+        }
+    }
+
 
 
 
@@ -262,8 +301,16 @@ public class ModFrame extends JFrame {
         });
 
         JMenu searchMenu = addMenu("Поиск", font);
-        addMenuItem("Поиск студента", searchMenu, font);
-        addMenuItem("Поиск группы", searchMenu, font);
+        addMenuItem("Поиск студента", searchMenu, font).addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionSearchStudent();
+            }
+        });;
+        addMenuItem("Поиск группы", searchMenu, font).addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionSearchGroup();
+            }
+        });;
 
         menuBar.add(fileMenu);
         menuBar.add(dbMenu);
