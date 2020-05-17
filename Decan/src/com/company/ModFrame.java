@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.print.DocFlavor;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import java.awt.*;
@@ -18,6 +19,17 @@ class framePage
         panel = new JPanel();
             panel.setLayout(new GridLayout(1, 1, 1, 1));
         tbl = new JTable(model);
+        tbl.setFont(new Font("Verdana", Font.PLAIN, 14));
+        panel.add(tbl,BorderLayout.CENTER);
+        scroll = new JScrollPane(tbl);
+        panel.add(scroll);
+        panel.setVisible(true);
+    }
+    public  framePage(Object[] headers, Object[][] data)
+    {
+        panel = new JPanel();
+        panel.setLayout(new GridLayout(1, 1, 1, 1));
+        tbl = new JTable(data, headers);
         tbl.setFont(new Font("Verdana", Font.PLAIN, 14));
         panel.add(tbl,BorderLayout.CENTER);
         scroll = new JScrollPane(tbl);
@@ -59,6 +71,7 @@ public class ModFrame extends JFrame {
     framePage pageStudent;
     framePage pageEkzst;
     framePage pageSearch;
+    framePage pageReport;
     framePage currentPage;
 
 
@@ -87,6 +100,7 @@ public class ModFrame extends JFrame {
         pageSemestr = new framePage(new SemestrTable());
         pageKafedra = new framePage(new KafedraTable());
         pageSearch = new framePage((new StudentTable()));
+        pageReport = new framePage((new EkzstTable()));
         pageDecan.addComponentsToFrame(this);
         createActionsPanel();
         createMenu();
@@ -149,6 +163,7 @@ public class ModFrame extends JFrame {
         pageStudent.removeComponentsFromFrame(this);
         pageEkzst.removeComponentsFromFrame(this);
         pageSearch.removeComponentsFromFrame(this);
+            pageReport.removeComponentsFromFrame(this);
         active.addComponentsToFrame(this);
         currentPage = active;
     }
@@ -217,6 +232,49 @@ public class ModFrame extends JFrame {
     {
         pageSearch = new framePage(new GroupModel());
         runSearch();
+    }
+    public  void actionReport()
+    {
+        Object[] headers = { "Оценка", "Студент", "Экзамен", "Семестр" };
+        HashMap<String, Integer> lookups = new HashMap<>();
+        lookups.put("student:::name:::id:::Студент", -1);
+        lookups.put("semestr:::name:::id:::Семестр", -1);
+        HashMap<String, JTextField> fields = new HashMap<>();
+        fields.put("Год", new JTextField());
+
+        InputForm frm = new InputForm(this, fields,
+                new ReportRow(), lookups, InputForm.Search);
+        frm.setVisible(true);
+        Main.DBWorking.queryConditionsBuilder conditions = new Main.DBWorking.queryConditionsBuilder();
+        if(frm.checkedConditions.get(0))
+            conditions.addCondition("year", frm.result.getRoleValue(2));
+        if(frm.checkedConditions.get(1))
+            conditions.addCondition("idSem", frm.result.getRoleValue(1));
+        if(frm.checkedConditions.get(2))
+            conditions.addCondition("idSt", frm.result.getRoleValue(0));
+
+
+        String res = conditions.buildData();
+        String query = "select ekzst.score, student.name, ekzam.name, semestr.name from ekzst, student, ekzam, semestr where " + res + "and ekzst.idSt = student.id AND ekzst.idEkz = ekzam.id and ekzam.idSem = semestr.id;";
+        ArrayList<ArrayList<Object>> value = Main.DBWorking.executeAnyQuery(query, 4);
+        if(value.size() == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Записей не обнаружено", "Информация", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        Object[][] data = new Object[value.size()][value.get(0).size()];
+
+        for(int i =0;i<value.size();i++)
+        {
+            ArrayList<Object> row = value.get(i);
+            for(int j =0;j<row.size();j++)
+            {
+                data[i][j] = row.get(j);
+            }
+        }
+        pageReport = new framePage(headers, data);
+       setCurrentPage(pageReport);
+       pageReport.updateUi();
     }
     private  void runSearch()
     {
@@ -290,6 +348,11 @@ public class ModFrame extends JFrame {
                 actionEkzst();
             }
         });
+        addMenuItem("Отчет об успеваемости", fileMenu, font).addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionReport();
+            }
+        });
         menuBar.add(fileMenu);
         JMenu dbMenu = addMenu("База данных", font);
         addMenuItem("Обновить соединения", dbMenu, font);
@@ -310,7 +373,7 @@ public class ModFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 actionSearchGroup();
             }
-        });;
+        });
 
         menuBar.add(fileMenu);
         menuBar.add(dbMenu);

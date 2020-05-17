@@ -140,10 +140,6 @@ public class Main {
             }
             return  data;
         }
-        public static ArrayList<ArrayList<Object>> readSomeFieldQuery(String tableName, ArrayList<String> columns)
-        {
-            return  readSomeFieldQuery(tableName, columns,null);
-        }
         public static  ArrayList<Object> readOneFieldQuery(String tableName, String columns, String condition)  {
             if(!hasConnection)
                 return  null;
@@ -216,6 +212,32 @@ public class Main {
                 e.printStackTrace();
                 return;
             }
+        }
+        public  static ArrayList<ArrayList<Object>> executeAnyQuery(String query, int columnCount)
+        {
+            if(!hasConnection)
+                return  null;
+
+            ArrayList<ArrayList<Object>> data = new ArrayList<>();
+            Statement stmt = null;
+            try {
+                stmt = connection.createStatement();
+
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next())
+                {
+                    ArrayList<Object> fieldData = new ArrayList<>();
+                    for(int i =1;i<=columnCount;i++)
+                    {
+                        fieldData.add(rs.getObject(i));
+                    }
+                    data.add(fieldData);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+            return  data;
         }
     }
 

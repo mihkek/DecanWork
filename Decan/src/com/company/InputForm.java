@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class InputForm extends JDialog {
     public  static  final  int AddEdit = 1;
     public  static final  int Search =2 ;
+
     public  BaseDbRow result;
     public  ArrayList<Boolean> checkedConditions;
     public  boolean hasResult = false;
@@ -130,8 +131,10 @@ public class InputForm extends JDialog {
         }
         catch (NumberFormatException w)
         {
-            JOptionPane.showMessageDialog(this, "Введена строка в поле, которое может содержать только цифры", "Введены не корректные данные", JOptionPane.ERROR_MESSAGE);
-            return;
+            if(mode == AddEdit) {
+                JOptionPane.showMessageDialog(this, "Введена строка в поле, которое может содержать только цифры", "Введены не корректные данные", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         }
        if(result.checkErrors() == "-1") {
            hasResult = true;
