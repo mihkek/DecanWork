@@ -79,6 +79,15 @@ public class GroupRow extends BaseDbRow {
     }
 
     @Override
+    public String checkErrors() {
+        if(name.equals(""))
+            return "Название группы не может быть пустым";
+        if(idKaf == -1)
+            return  "Укажите кафедру";
+        return "-1";
+    }
+
+    @Override
     public void setPrimaryKeyValue(int value) {
         id = value;
     }

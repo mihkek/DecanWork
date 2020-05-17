@@ -80,6 +80,15 @@ public class KafedraRow  extends BaseDbRow {
     }
 
     @Override
+    public String checkErrors() {
+        if(name.equals(""))
+            return "Название кафедры не может быть пустым";
+        if(idDec == -1)
+            return  "Укажите деканат";
+        return "-1";
+    }
+
+    @Override
     public void setPrimaryKeyValue(int value) {
        id = value;
     }

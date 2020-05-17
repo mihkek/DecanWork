@@ -65,6 +65,13 @@ public class DecanRow extends BaseDbRow {
     }
 
     @Override
+    public String checkErrors() {
+        if(name.equals(""))
+            return "Название деканата не может быть пустым";
+        return  "-1";
+    }
+
+    @Override
     public void setPrimaryKeyValue(int value) {
         id = value;
     }

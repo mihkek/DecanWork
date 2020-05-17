@@ -14,6 +14,7 @@ public abstract class BaseDbRow {
     public  int roleCount;
     public abstract String getRoleValue(int id);
     public  abstract  void setRoleValue(int id, Object value);
+    public  abstract  String checkErrors();
     public  abstract void setPrimaryKeyValue(int value);
     public  abstract void buildFromList(ArrayList<Object> data, boolean isFull);
     public  void buildFromList(ArrayList<Object> data)

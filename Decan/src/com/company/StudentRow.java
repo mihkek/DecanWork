@@ -79,6 +79,15 @@ public class StudentRow extends BaseDbRow {
     }
 
     @Override
+    public String checkErrors() {
+        if(name.equals(""))
+            return  "ФИО студента не может быть пустым";
+        if(idGroup == -1)
+            return "Укажите группу";
+        return "-1";
+    }
+
+    @Override
     public void setPrimaryKeyValue(int value) {
         id = value;
     }

@@ -80,6 +80,17 @@ public class ExzstRow extends BaseDbRow {
     }
 
     @Override
+    public String checkErrors() {
+        if(idSt ==- 1)
+            return  "Укажите студента";
+        if(idEkz == -1)
+            return  "Укажите экзамен";
+        if(score == "")
+            return "Укажите оценку";
+        return "-1";
+    }
+
+    @Override
     public void setPrimaryKeyValue(int value) {
         id = value;
     }

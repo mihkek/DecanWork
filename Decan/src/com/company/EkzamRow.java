@@ -78,6 +78,17 @@ public class EkzamRow extends BaseDbRow {
     }
 
     @Override
+    public String checkErrors() {
+        if(name.equals(""))
+          return   "Название не может быть пустым";
+        if((year<1990)||(year>2099))
+            return "Введен не корректный год";
+        if(idSem == -1)
+            return  "Укажите семестр";
+        return  "-1";
+    }
+
+    @Override
     public void setPrimaryKeyValue(int value) {
         id = value;
     }

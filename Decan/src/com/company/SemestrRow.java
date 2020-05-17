@@ -72,6 +72,13 @@ public class SemestrRow  extends BaseDbRow {
     }
 
     @Override
+    public String checkErrors() {
+        if(name.equals(""))
+            return "Название семестра не может быть пустым";
+        return "-1";
+    }
+
+    @Override
     public void setPrimaryKeyValue(int value) {
         id = value;
     }

@@ -108,7 +108,8 @@ public class InputForm extends JDialog {
 
     public  void  saveClick(int mode)
     {
-        ArrayList<Object> data = new ArrayList<>();
+        try {
+            ArrayList<Object> data = new ArrayList<>();
             for (int i = 0; i < textFields.size(); i++) {
                 data.add(textFields.get(i).getText());
 
@@ -118,18 +119,26 @@ public class InputForm extends JDialog {
                     data.add(lookUpFields.get(i).getKeyValue());
                 }
             }
-       if(mode == Search)
-       {
-           checkedConditions = new ArrayList<>();
-           for(int i =0;i<checkBoxes.size();i++)
-           {
-               checkedConditions.add(checkBoxes.get(i).isSelected());
-           }
-       }
+            if (mode == Search) {
+                checkedConditions = new ArrayList<>();
+                for (int i = 0; i < checkBoxes.size(); i++) {
+                    checkedConditions.add(checkBoxes.get(i).isSelected());
+                }
+            }
 
-        result.buildFromList(data);
-        hasResult = true;
-        setVisible(false);
+            result.buildFromList(data);
+        }
+        catch (NumberFormatException w)
+        {
+            JOptionPane.showMessageDialog(this, "Введена строка в поле, которое может содержать только цифры", "Введены не корректные данные", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+       if(result.checkErrors() == "-1") {
+           hasResult = true;
+           setVisible(false);
+       }
+       else
+           JOptionPane.showMessageDialog(this, result.checkErrors(), "Введены не корректные данные", JOptionPane.ERROR_MESSAGE);
     }
 
 }
