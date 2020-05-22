@@ -7,8 +7,9 @@ import java.util.HashMap;
 public class EkzamTable extends BaseDbTable {
     public  EkzamTable()
     {
-        columnCount = 4;
+        columnModelCount = 4;
         dbTableName = "ekzam";
+        columnCount = columnModelCount;
         records = new ArrayList<>();
         Main.DBWorking.tables.add(this);
         readData();
@@ -17,7 +18,7 @@ public class EkzamTable extends BaseDbTable {
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return "Номер";
+                return "ID";
             case 1:
                 return "Название";
             case 2:

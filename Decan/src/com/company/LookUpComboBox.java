@@ -29,6 +29,16 @@ public class LookUpComboBox extends JComboBox {
             addItem(visibleValues.get(i));
         }
     }
+    public LookUpComboBox(ArrayList<Object> values)
+    {
+        visibleValues = values;
+        keyValues = values;
+        for(int i = 0;i< visibleValues.size();i++)
+        {
+            addItem(visibleValues.get(i));
+        }
+    }
+
     private void lookUpQuery()
     {
         if(!hasConnection)
@@ -56,6 +66,17 @@ public class LookUpComboBox extends JComboBox {
        int id = 0;
        for(int i=0;i<keyValues.size();i++)
        {
+           if(keyValues.get(i).getClass() == String.class)
+           {
+               try {
+                   int v = Integer.parseInt((String) keyValues.get(i));
+                   if (v == (int) keyFieldValue) {
+                       id = i;
+                       break;
+                   }
+               }
+               catch (NumberFormatException w){}
+           }
            if(keyValues.get(i) == keyFieldValue)
            {id = i; break;}
        }

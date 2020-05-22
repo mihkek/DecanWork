@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 13 2020 г., 19:57
+-- Время создания: Май 22 2020 г., 19:10
 -- Версия сервера: 10.4.11-MariaDB
 -- Версия PHP: 7.2.28
 
@@ -61,9 +61,9 @@ CREATE TABLE `ekzam` (
 --
 
 INSERT INTO `ekzam` (`id`, `name`, `year`, `idSem`) VALUES
-(1, 'Математика', 2019, 2),
+(1, 'Математика', 1991, 2),
 (2, 'Информатика', 2020, 3),
-(3, 'Русский', 2029, 2),
+(3, 'Русский', 2020, 2),
 (4, 'Химия', 2020, 2),
 (5, 'Физика', 2020, 3);
 
@@ -85,9 +85,15 @@ CREATE TABLE `ekzst` (
 --
 
 INSERT INTO `ekzst` (`id`, `idSt`, `idEkz`, `score`) VALUES
-(4, 1, 1, 'Хорошо'),
-(5, 2, 2, 'Отлично'),
-(7, 2, 3, 'Удовлетворительно');
+(4, 1, 1, '4'),
+(5, 2, 4, '5'),
+(7, 1, 3, '3'),
+(8, 5, 2, '5'),
+(9, 2, 3, '4'),
+(12, 4, 2, '2'),
+(13, 2, 1, '2'),
+(14, 1, 5, '2'),
+(15, 3, 3, '4');
 
 -- --------------------------------------------------------
 
@@ -109,7 +115,8 @@ INSERT INTO `groupa` (`id`, `name`, `idKaf`) VALUES
 (1, '16во1', 6),
 (2, '20во12', 3),
 (4, '14вв2', 1),
-(5, '17дд3', 7);
+(5, '17дд3', 7),
+(6, '18ППВ', 1);
 
 -- --------------------------------------------------------
 
@@ -173,7 +180,8 @@ INSERT INTO `student` (`id`, `name`, `idGroup`) VALUES
 (1, 'Иванов И И', 2),
 (2, 'Петров П П', 4),
 (3, 'Сидоров В В', 1),
-(4, 'Ворошилов М А', 5);
+(4, 'Ворошилов М А', 5),
+(5, 'Березов И И', 1);
 
 --
 -- Индексы сохранённых таблиц
@@ -247,13 +255,13 @@ ALTER TABLE `ekzam`
 -- AUTO_INCREMENT для таблицы `ekzst`
 --
 ALTER TABLE `ekzst`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `groupa`
 --
 ALTER TABLE `groupa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `kafedra`
@@ -271,7 +279,7 @@ ALTER TABLE `semestr`
 -- AUTO_INCREMENT для таблицы `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

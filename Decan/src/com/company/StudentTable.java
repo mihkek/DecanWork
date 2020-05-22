@@ -7,9 +7,10 @@ import java.util.HashMap;
 public class StudentTable extends BaseDbTable {
     public  StudentTable()
     {
-        columnCount = 3;
+        columnModelCount = 3;
         dbTableName = "student";
         records = new ArrayList<>();
+        columnCount = columnModelCount;
         Main.DBWorking.tables.add(this);
         readData();
     }
@@ -17,10 +18,10 @@ public class StudentTable extends BaseDbTable {
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return "Номер";
+                return "ID";
             case 1:
                 return "Название";
-            case  2:
+            case 2:
                 return  "Группа";
         }
         return "";

@@ -54,7 +54,7 @@ public class ReportRow extends  BaseDbRow {
         if(data.get(0).equals(""))
             year = -1;
         else
-            year = (int) data.get(0);
+            year = Integer.parseInt((String)data.get(0));
         idSt = (int) data.get(2);
         idSem = (int)data.get(1);
 

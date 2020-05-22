@@ -3,7 +3,6 @@ package com.company;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static javax.swing.UIManager.get;
 
@@ -11,7 +10,8 @@ public  class DecanModel extends BaseDbTable {
         public  DecanModel()
         {
             records = new ArrayList<>();
-            columnCount = 2;
+            columnModelCount = 2;
+            columnCount = columnModelCount;
             dbTableName = "decanat";
             Main.DBWorking.tables.add(this);
             readData();
@@ -20,7 +20,7 @@ public  class DecanModel extends BaseDbTable {
         public String getColumnName(int columnIndex) {
             switch (columnIndex) {
                 case 0:
-                    return "Номер";
+                    return "ID";
                 case 1:
                     return "Название";
             }

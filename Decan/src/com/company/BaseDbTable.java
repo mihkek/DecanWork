@@ -10,6 +10,7 @@ public abstract class BaseDbTable  implements TableModel
 {
     //С этими полями будет основная работа
     protected List<BaseDbRow> records;
+    protected  int columnModelCount;
     protected  int columnCount;
     protected String dbTableName;
     public  abstract BaseDbRow constructTableRow();
@@ -20,7 +21,7 @@ public abstract class BaseDbTable  implements TableModel
     public  abstract  HashMap<String, Integer> generateLookUpFields(int id);
     public  void search(BaseDbRow example, ArrayList<Boolean> chechedFields){
         Main.DBWorking.queryConditionsBuilder conditions = new Main.DBWorking.queryConditionsBuilder();
-        for(int i =1;i<columnCount;i++)
+        for(int i = 1; i< columnModelCount; i++)
         {
             if(chechedFields.get(i-1))
                 conditions.addCondition(getDbRoleName(i), example.getRoleValue(i));
@@ -66,7 +67,7 @@ public abstract class BaseDbTable  implements TableModel
         ArrayList<ArrayList<Object>> data = new ArrayList<>();
         BaseDbRow row;
         ArrayList<String> cols = new ArrayList<>();
-        for(int i = 0;i<columnCount;i++)
+        for(int i = 0; i< columnModelCount; i++)
         {
             cols.add(getDbRoleName(i));
         }
@@ -77,7 +78,7 @@ public abstract class BaseDbTable  implements TableModel
             row.buildFromList(data.get(j), true);
             records.add(row);
         }
-        sort();
+       // sort();
     }
     public  void clearData()
     {
@@ -95,7 +96,7 @@ public abstract class BaseDbTable  implements TableModel
             for (int j = 0; j < records.size() -1; j++) {
                 String val1 = records.get(j).getRoleValue(0);
                 String val2 =  records.get(j + 1).getRoleValue(0);
-                if (Integer.parseInt(records.get(j).getRoleValue(0)) < Integer.parseInt(records.get(j + 1).getRoleValue(0))) {
+                if (Integer.parseInt(records.get(j).getRoleValue(0)) > Integer.parseInt(records.get(j + 1).getRoleValue(0))) {
                     BaseDbRow b = records.get(j); // создали дополнительную переменную
                     records.set(j, records.get(j+1));// digitals[j + 1]; // меняем местами
                     records.set(j + 1, b);// = b; // значения элементов

@@ -97,7 +97,7 @@ public class Main {
                     for (int i = 0; i < conditions.size(); i++) {
                         result += conditions.keySet().toArray()[i] + " = '" + conditions.values().toArray()[i] + "'";
                         if (i != conditions.size() - 1)
-                            result += ",";
+                            result += " and ";
                     }
                 return  result;
             }
@@ -213,7 +213,32 @@ public class Main {
                 return;
             }
         }
-        public  static ArrayList<ArrayList<Object>> executeAnyQuery(String query, int columnCount)
+        public  static  String executeOneResultQuery(String query)
+        {
+            if(!hasConnection)
+                return  null;
+
+            ArrayList<ArrayList<Object>> data = new ArrayList<>();
+            Statement stmt = null;
+            String result = "";
+            try {
+                stmt = connection.createStatement();
+
+                ResultSet rs = stmt.executeQuery(query);
+
+                while (rs.next())
+                {
+                   result = rs.getObject(1).toString();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+            catch (NullPointerException d){
+                return null;}
+            return  result;
+        }
+        public  static ArrayList<ArrayList<Object>> executeMultiResultQuery(String query, int columnCount)
         {
             if(!hasConnection)
                 return  null;

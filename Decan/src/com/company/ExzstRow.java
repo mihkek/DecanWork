@@ -38,9 +38,26 @@ public class ExzstRow extends BaseDbRow {
         return  (String)data.get(0);
     }
     public  String getLookUp_IdSt(){
-        ArrayList<Object> data = Main.DBWorking.readOneFieldQuery("student", "name", " id = '"+ idEkz +"'");
+        ArrayList<Object> data = Main.DBWorking.readOneFieldQuery("student", "name", " id = '"+ idSt +"'");
         return  (String)data.get(0);
     }
+    public  String getSemName()
+    {
+        return Main.DBWorking.executeOneResultQuery("select name from semestr where id in (select idSem from ekzam where id = " + idEkz + ")");
+    }
+    public String getYear()
+    {
+        return  Main.DBWorking.executeOneResultQuery("select year from ekzam where id = " + idEkz);
+    }
+    public  String getKaf()
+    {
+        return  Main.DBWorking.executeOneResultQuery("select name from kafedra where id in (select idKaf from groupa where id in(select idGroup from student where id =  " +idSt + "))");
+    }
+    public String getDecan()
+    {
+        return  Main.DBWorking.executeOneResultQuery("select name from decanat where id in (select idDec from kafedra where id in (select idKaf from groupa where id in(select idGroup from student where id =  " +idSt + ")))");
+    }
+
     @Override
     public String buildForInsert() {
         return "null, '"+idSt+"'"+ "," + "'"+ idEkz +"'"+","+ "'"+score+"'";
@@ -107,9 +124,9 @@ public class ExzstRow extends BaseDbRow {
         }
         if(data.size() != roleCount-1)
             return;
-        score = (String) data.get(0);
         idSt = (int)data.get(1);
-        idEkz = (int)data.get(2);
+        idEkz = (int)data.get(0);
+        score = (String)data.get(2);
 
     }
 

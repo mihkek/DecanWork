@@ -2,13 +2,13 @@ package com.company;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class GroupModel extends BaseDbTable {
     public  GroupModel()
     {
-        columnCount = 3;
+        columnModelCount = 3;
         dbTableName = "groupa";
+        columnCount = columnModelCount;
         records = new ArrayList<>();
         Main.DBWorking.tables.add(this);
         readData();
@@ -17,7 +17,7 @@ public class GroupModel extends BaseDbTable {
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return "Номер";
+                return "ID";
             case 1:
                 return "Название";
             case  2:

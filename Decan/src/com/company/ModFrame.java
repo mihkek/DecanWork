@@ -1,8 +1,6 @@
 package com.company;
 
-import javax.print.DocFlavor;
 import javax.swing.*;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -233,7 +231,7 @@ public class ModFrame extends JFrame {
         pageSearch = new framePage(new GroupModel());
         runSearch();
     }
-    public  void actionReport()
+    public  void actionReportScore()
     {
         Object[] headers = { "Оценка", "Студент", "Экзамен", "Семестр" };
         HashMap<String, Integer> lookups = new HashMap<>();
@@ -243,38 +241,91 @@ public class ModFrame extends JFrame {
         fields.put("Год", new JTextField());
 
         InputForm frm = new InputForm(this, fields,
-                new ReportRow(), lookups, InputForm.Search);
+                new ReportRow(), lookups, InputForm.Report);
         frm.setVisible(true);
-        Main.DBWorking.queryConditionsBuilder conditions = new Main.DBWorking.queryConditionsBuilder();
-        if(frm.checkedConditions.get(0))
-            conditions.addCondition("year", frm.result.getRoleValue(2));
-        if(frm.checkedConditions.get(1))
-            conditions.addCondition("idSem", frm.result.getRoleValue(1));
-        if(frm.checkedConditions.get(2))
-            conditions.addCondition("idSt", frm.result.getRoleValue(0));
+        if(frm.hasResult) {
+            Main.DBWorking.queryConditionsBuilder conditions = new Main.DBWorking.queryConditionsBuilder();
+            if (frm.checkedConditions.get(0))
+                conditions.addCondition("year", frm.result.getRoleValue(2));
+            if (frm.checkedConditions.get(1))
+                conditions.addCondition("idSem", frm.result.getRoleValue(1));
+            if (frm.checkedConditions.get(2))
+                conditions.addCondition("idSt", frm.result.getRoleValue(0));
 
 
-        String res = conditions.buildData();
-        String query = "select ekzst.score, student.name, ekzam.name, semestr.name from ekzst, student, ekzam, semestr where " + res + "and ekzst.idSt = student.id AND ekzst.idEkz = ekzam.id and ekzam.idSem = semestr.id;";
-        ArrayList<ArrayList<Object>> value = Main.DBWorking.executeAnyQuery(query, 4);
-        if(value.size() == 0)
-        {
-            JOptionPane.showMessageDialog(this, "Записей не обнаружено", "Информация", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-        Object[][] data = new Object[value.size()][value.get(0).size()];
-
-        for(int i =0;i<value.size();i++)
-        {
-            ArrayList<Object> row = value.get(i);
-            for(int j =0;j<row.size();j++)
-            {
-                data[i][j] = row.get(j);
+            String res = conditions.buildData();
+            String query = "select ekzst.score, student.name, ekzam.name, semestr.name from ekzst, student, ekzam, semestr where " + res + "and ekzst.idSt = student.id AND ekzst.idEkz = ekzam.id and ekzam.idSem = semestr.id;";
+            ArrayList<ArrayList<Object>> value = Main.DBWorking.executeMultiResultQuery(query, 4);
+            if (value.size() == 0) {
+                JOptionPane.showMessageDialog(this, "Записей не обнаружено", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
+            Object[][] data = new Object[value.size()][value.get(0).size()];
+
+            for (int i = 0; i < value.size(); i++) {
+                ArrayList<Object> row = value.get(i);
+                for (int j = 0; j < row.size(); j++) {
+                    data[i][j] = row.get(j);
+                }
+            }
+            pageReport = new framePage(headers, data);
+            setCurrentPage(pageReport);
+            pageReport.updateUi();
         }
-        pageReport = new framePage(headers, data);
-       setCurrentPage(pageReport);
-       pageReport.updateUi();
+    }
+    public  void actionScoreAvg()
+    {
+        Object[] headers = { "Оценка", "Студент", "Экзамен", "Семестр" };
+        HashMap<String, Integer> lookups = new HashMap<>();
+        lookups.put("student:::name:::id:::Студент$$", -1);
+        lookups.put("semestr:::name:::id:::Семестр", -1);
+        HashMap<String, JTextField> fields = new HashMap<>();
+        fields.put("Год", new JTextField());
+
+        InputForm frm = new InputForm(this, fields,
+                new ReportRow(), lookups, InputForm.Report);
+        frm.setVisible(true);
+        if(frm.hasResult) {
+            Main.DBWorking.queryConditionsBuilder conditions = new Main.DBWorking.queryConditionsBuilder();
+
+
+            String res = "select AVG(ekzst.score) from ekzst where ekzst.idSt =  " +frm.result.getRoleValue(0);
+            String student = Main.DBWorking.executeOneResultQuery("select name from student where id = "+frm.result.getRoleValue(0));
+            String message = "Средний балл студента " + student;
+            if(frm.checkedConditions.get(1)) {
+                res += " and ekzst.idEkz in (select id from ekzam WHERE ekzam.idSem = " + frm.result.getRoleValue(1) + ")";
+                String sem = Main.DBWorking.executeOneResultQuery("select name from semestr where id = " + frm.result.getRoleValue(1));
+                message += " за " + sem + " семестр";
+            }
+            else {
+                if (frm.checkedConditions.get(0)) {
+                    res += "  and ekzst.idEkz in (select id from ekzam WHERE ekzam.year = " + frm.result.getRoleValue(2) + ")";
+                    message += " за " + frm.result.getRoleValue(2) + " год";
+                }
+                else
+                {
+                    if (frm.checkedConditions.get(1) && frm.checkedConditions.get(0)) {
+                        res += " and ekzst.idEkz in (select id from ekzam WHERE ekzam.idSem = " + frm.result.getRoleValue(1);
+                        res += " and  ekzam.year = " + frm.result.getRoleValue(2) + ")";
+                        String sem = Main.DBWorking.executeOneResultQuery("select name from semestr where id = " + frm.result.getRoleValue(1));
+                        message += " за " + sem + " семестр";
+                        message += " за " + frm.result.getRoleValue(2) + " год";
+                    }
+                }
+            }
+
+            String value = Main.DBWorking.executeOneResultQuery(res);
+            if (value == null) {
+                JOptionPane.showMessageDialog(this, "Записей не обнаружено", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            else
+            {
+                message += " - " + value;
+                JOptionPane.showMessageDialog(this, message, "Результат", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        }
     }
     private  void runSearch()
     {
@@ -301,6 +352,7 @@ public class ModFrame extends JFrame {
             pageSearch.updateUi();
         }
     }
+
 
 
 
@@ -348,11 +400,7 @@ public class ModFrame extends JFrame {
                 actionEkzst();
             }
         });
-        addMenuItem("Отчет об успеваемости", fileMenu, font).addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                actionReport();
-            }
-        });
+
         menuBar.add(fileMenu);
         JMenu dbMenu = addMenu("База данных", font);
         addMenuItem("Обновить соединения", dbMenu, font);
@@ -375,9 +423,21 @@ public class ModFrame extends JFrame {
             }
         });
 
+        JMenu reportMenu = addMenu("Отчет", font);
+        addMenuItem("Отчет об успеваемости", reportMenu, font).addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionReportScore();
+            }
+        });
+        addMenuItem("Средний балл студента", reportMenu, font).addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                 actionScoreAvg();
+            }
+        });
         menuBar.add(fileMenu);
         menuBar.add(dbMenu);
         menuBar.add(searchMenu);
+        menuBar.add(reportMenu);
         setJMenuBar(menuBar);
     }
 }
